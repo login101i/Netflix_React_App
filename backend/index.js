@@ -4,6 +4,8 @@ const colors = require("colors");
 const dotenv = require("dotenv");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
+const moviesRoute = require("./routes/movies");
+const listRoute = require("./routes/lists");
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ mongoose
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/movies", moviesRoute);
+app.use("/api/list", listRoute);
 
 app.listen(8880, () => {
   console.log("Serwer is running on port 8880".brightMagenta);
