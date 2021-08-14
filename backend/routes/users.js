@@ -10,7 +10,7 @@ router.put("/:id", verify, async (req, res) => {
       req.body.password = CryptoJS.AES.encrypt(req.body.password, process.env.SECRET_KEY).toString();
     }
     try {
-      const updatedUser = await User.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true  });
+      const updatedUser = await User.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
       res.status(200).json(updatedUser);
     } catch (err) {
       res.status(500).json(err);
@@ -21,10 +21,45 @@ router.put("/:id", verify, async (req, res) => {
 });
 
 // delete
+router.delete("/:id", verify, async (req, res) => {
+  if (req.user.id === req.params.id || req.user.isAdmin) {
+    try {
+      await User.findByIdAndDelete(req.params.id);
+      res.status(200).json("Użytkownik usunięty");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json("Możesz usunąć tylko swoje konto.");
+  }
+});
 
 // get
+router.get("/find/:id", async (req, res) => {
+  try {
+    const findedUser = await User.findById(req.params.id);
+    const { password, ...info } = findedUser._doc;
+    res.status(200).json(info);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // get all
+router.get("/", verify, async (req, res) => {
+  const query = req.query.new;
+  if (req.user.isAdmin) {
+    try {
+      const users = query ? await User.find().sort({_id:-1}).limit(3) : await User.find();
+      //   const { password, ...info } = findedUser._doc;
+      res.status(200).json(users);
+    } catch (err) {
+      res.status(403).json(err);
+    }
+  } else {
+    res.status(403).json("Nie jesteś adminem i nie zobaczysz wszystkich użytkowników");
+  }
+});
 
 // get user stats
 
