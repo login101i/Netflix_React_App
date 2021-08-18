@@ -12,7 +12,7 @@ export default function Register() {
     setEmail(emailRef.current.value);
   };
   const handleFinish = () => {
-    handleFinish(passwordRef.current.value);
+    setPassword(passwordRef.current.value);
   };
 
   return (

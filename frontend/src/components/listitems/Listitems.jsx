@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {Link} from 'react-router-dom'
+import axios from "axios";
 
 import "./listItems.scss";
 
@@ -9,33 +11,55 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 
 const trailer = "https://www.w3schools.com/html/mov_bbb.mp4";
 
-const ListItems = ({ index }) => {
+const ListItems = ({ item, index }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [movie, setMovie] = useState({});
+
+
+  useEffect(() => {
+    const getMovie = async () => {
+      try {
+        const getId = await axios.get("movies/find/" + item, {
+          headers: {
+            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTdiZjBkOGI0YmQ4NDdkODZjNzU4YyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYyOTIzNTQ0MiwiZXhwIjoxNjI5NDk0NjQyfQ.1ObhJ8ZfjWeOVBVDiXZBbnw7uHZfDipc3U2fbWtiyqE",
+          },
+        });
+        setMovie(getId.data);
+        console.log(movie);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMovie();
+  }, [item]);
+
   return (
     <>
-      <div className="listItem" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} style={{ left: isHovered && index * 225 - 250 + index * 2.5 }}>
-        <img src="https://deadline.com/wp-content/uploads/2017/02/lotr.jpg?w=681&h=383&crop=1" alt="" />
-        {isHovered && (
-          <>
-            <video src={trailer} autoPlay={true} loop></video>
-            <div className="itemInfo">
-              <div className="icons">
-                <PlayArrowIcon className="icon" />
-                <AddIcon className="icon" />
-                <ThumbDownIcon className="icon" />
-                <ThumbUpIcon className="icon" />
+      <Link to={{pathname:"/watch", movie:movie}}>
+        <div className="listItem" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} style={{ left: isHovered && index * 225 - 250 + index * 2.5 }}>
+          <img src={movie.img} alt="" />
+          {isHovered && (
+            <>
+              
+              <div className="itemInfo">
+                <div className="icons">
+                  <PlayArrowIcon className="icon" />
+                  <AddIcon className="icon" />
+                  <ThumbDownIcon className="icon" />
+                  <ThumbUpIcon className="icon" />
+                </div>
+                <div className="itemInfoTop">
+                  <span>{movie.duration}</span>
+                  <div className="limit">{item.limit}</div>
+                  <span>{movie.year}</span>
+                </div>
+                <div className="desc">{movie.desc} .</div>
               </div>
-              <div className="itemInfoTop">
-                <span>1 hour 11 minutes</span>
-                <div className="limit">+17</div>
-                <span>1999</span>
-              </div>
-              <div className="desc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam laudantium natus incidunt numquam quasi possimus expedita? .</div>
-            </div>
-            <div className="genre">Comedy</div>
-          </>
-        )}
-      </div>
+              <div className="genre">{movie.genre}</div>
+            </>
+          )}
+        </div>
+      </Link>
     </>
   );
 };

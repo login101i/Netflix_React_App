@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import "./navbar.scss";
 import PersonIcon from "@material-ui/icons/Person";
@@ -15,15 +16,28 @@ const Navbar = () => {
   };
   console.log(isScrolled);
   return (
-    <div className={isScrolled ? "navbar scrolled": "navbar"}>
+    <div className={isScrolled ? "navbar scrolled" : "navbar"}>
       <div className="container">
         <div className="left">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="" />
-          <span>Home Page</span>
-          <span>Series</span>
-          <span>Movies</span>
-          <span>New and Popular</span>
-          <span>My list</span>
+          <Link to="/" className="link">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="" />
+          </Link>
+          <Link to="/" className="link">
+            <span>Home Page</span>
+          </Link>
+          <Link to="/series" className="link">
+            <span>Series</span>
+          </Link>
+          <Link to="/movies" className="link">
+            <span>Movies</span>
+          </Link>
+          <Link to="/new" className="link">
+            <span>New and Popular</span>
+          </Link>
+
+          <Link to="/favourites" className="link">
+            <span>My list</span>
+          </Link>
         </div>
         <div className="right">
           <PersonIcon className="icon" />
