@@ -3,7 +3,7 @@ const Movie = require("../models/Movie");
 const verify = require("../verifyToken");
 
 // create movie
-router.put("/", verify, async (req, res) => {
+router.post("/", verify, async (req, res) => {
   if (req.user.isAdmin) {
     const newMovie = new Movie(req.body);
     try {
@@ -13,7 +13,7 @@ router.put("/", verify, async (req, res) => {
       res.status(500).json(err);
     }
   } else {
-    res.status(403).json("Możesz dodać filmu. Nie jesteś adminem.");
+    res.status(403).json("Nie możesz dodać filmu. Nie jesteś adminem.");
   }
 });
 

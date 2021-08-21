@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import "./navbar.scss";
@@ -6,6 +6,8 @@ import PersonIcon from "@material-ui/icons/Person";
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { AuthContext } from "../../authContext/AuthContext";
+import { logout } from "../../authContext/AuthActions";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,6 +16,9 @@ const Navbar = () => {
     setIsScrolled(window.pageYOffset > 20 ? true : false);
     return () => (window.onscroll = null);
   };
+
+    const { dispatch } = useContext(AuthContext);
+
   console.log(isScrolled);
   return (
     <div className={isScrolled ? "navbar scrolled" : "navbar"}>
@@ -23,16 +28,16 @@ const Navbar = () => {
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="" />
           </Link>
           <Link to="/" className="link">
-            <span>Home Page</span>
+            <span className="navbarmainLinks">Home Page</span>
           </Link>
           <Link to="/series" className="link">
-            <span>Series</span>
+            <span className="navbarmainLinks">Series</span>
           </Link>
           <Link to="/movies" className="link">
-            <span>Movies</span>
+            <span className="navbarmainLinks">Movies</span>
           </Link>
           <Link to="/new" className="link">
-            <span>New and Popular</span>
+            <span className="navbarmainLinks">New and Popular</span>
           </Link>
 
           <Link to="/favourites" className="link">
@@ -48,7 +53,7 @@ const Navbar = () => {
             <ExpandMoreIcon className="icon" />
             <div className="options">
               <div>settings</div>
-              <div>logout</div>
+              <span onClick={() => dispatch(logout())}>Logout</span>
             </div>
           </div>
         </div>

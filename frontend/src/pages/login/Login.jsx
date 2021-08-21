@@ -1,15 +1,19 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import "./login.scss";
+import { login } from "../../authContext/apiCalls";
+import { AuthContext } from "../../authContext/AuthContext";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { dispatch } = useContext(AuthContext);
 
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const handleFinish = () => {
-    handleFinish(passwordRef.current.value);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login({ email, password }, dispatch);
   };
 
   return (
@@ -29,9 +33,11 @@ export default function Register() {
           <input type="email" placeholder="email address" ref={emailRef} />
         </div>
         <div className="input">
-          <input type="password" placeholder=" password" ref={passwordRef} />
-          <button className="registerButton" onClick={handleFinish}>
-            Log In
+          <h1>Sign In</h1>
+          <input type="email" placeholder="Email or phone number" onChange={(e) => setEmail(e.target.value)} />
+          <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+          <button className="loginButton" onClick={handleLogin}>
+            Sign In
           </button>
           <span className="new">
             New to Netflix? <strong>Sign up here</strong>{" "}

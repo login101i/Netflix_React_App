@@ -15,13 +15,15 @@ const ListItems = ({ item, index }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [movie, setMovie] = useState({});
 
+    const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+
 
   useEffect(() => {
     const getMovie = async () => {
       try {
-        const getId = await axios.get("movies/find/" + item, {
+        const getId = await axiosInstance.get("movies/find/" + item, {
           headers: {
-            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTdiZjBkOGI0YmQ4NDdkODZjNzU4YyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYyOTIzNTQ0MiwiZXhwIjoxNjI5NDk0NjQyfQ.1ObhJ8ZfjWeOVBVDiXZBbnw7uHZfDipc3U2fbWtiyqE",
+            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTdiZjBkOGI0YmQ4NDdkODZjNzU4YyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYyOTU0MzY0MSwiZXhwIjoxNjI5ODAyODQxfQ._cKVjtMiKZdk7BewnEGEEyT-U7uHVGp4gmvarAd7kLI",
           },
         });
         setMovie(getId.data);

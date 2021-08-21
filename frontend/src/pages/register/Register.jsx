@@ -1,18 +1,32 @@
 import { useState, useRef } from "react";
 import "./register.scss";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [username, setUsername] = useState("");
+  const history = useHistory();
   const emailRef = useRef();
   const passwordRef = useRef();
+  const usernameRef = useRef();
+
+  const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API_URL });
 
   const handleStart = () => {
     setEmail(emailRef.current.value);
   };
-  const handleFinish = () => {
+  const handleFinish = async (e) => {
+    e.preventDefault();
     setPassword(passwordRef.current.value);
+    setUsername(usernameRef.current.value);
+    try {
+      await axiosInstance.post("auth/register", { email, username, password });
+      history.push("/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -38,7 +52,8 @@ export default function Register() {
           </div>
         ) : (
           <div className="input">
-            <input type="password" placeholder="enter password" ref={passwordRef} />
+            <input type="username" placeholder="username" ref={usernameRef} />
+            <input type="password" placeholder="password" ref={passwordRef} />
             <button className="registerButton" onClick={handleFinish}>
               Go for it!
             </button>

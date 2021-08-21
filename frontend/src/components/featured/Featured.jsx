@@ -5,15 +5,17 @@ import "./featured.scss";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import InfoIcon from "@material-ui/icons/Info";
 
-const Featured = ({ type }) => {
+const Featured = ({ type, setGenre }) => {
   const [content, setContent] = useState({});
+
+    const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API_URL });
 
   useEffect(() => {
     const getRandomContent = async () => {
       try {
-        const res = await axios.get(`movies/random`, {
+        const res = await axiosInstance.get(`movies/random`, {
           headers: {
-            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTdiZjBkOGI0YmQ4NDdkODZjNzU4YyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYyOTIzNTQ0MiwiZXhwIjoxNjI5NDk0NjQyfQ.1ObhJ8ZfjWeOVBVDiXZBbnw7uHZfDipc3U2fbWtiyqE",
+            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTdiZjBkOGI0YmQ4NDdkODZjNzU4YyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYyOTU0MzY0MSwiZXhwIjoxNjI5ODAyODQxfQ._cKVjtMiKZdk7BewnEGEEyT-U7uHVGp4gmvarAd7kLI",
           },
         });
         setContent(res.data[0]);
@@ -29,8 +31,8 @@ const Featured = ({ type }) => {
     <div className="featured">
       {type && (
         <div className="category">
-          <span>{type === "movies" ? "Movies" : "Series"}</span>
-          <select name="genre" id="genre">
+          <span>{type === "movie" ? "Movies" : "Series"}</span>
+          <select name="genre" id="genre" onChange={(e) => setGenre(e.target.value)}>
             <option>Genre</option>
             <option value="adventure">Adventure</option>
             <option value="comedy">Comedy</option>
@@ -45,6 +47,7 @@ const Featured = ({ type }) => {
             <option value="animation">Animation</option>
             <option value="drama">Drama</option>
             <option value="documentary">Documentary</option>
+            <option value="romance">romance</option>
           </select>
         </div>
       )}
