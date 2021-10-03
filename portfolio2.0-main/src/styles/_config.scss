@@ -1,0 +1,42 @@
+$primary-color:rgb(58, 162, 211);
+$dark-color:rgb(70, 69, 69);
+$light-color:rgb(220, 226, 220);
+$success-color:green;
+$danger-color:rgb(172, 5, 60);
+$max-width:1100px;
+
+// set text color based on the background
+@function set-text-color($color){
+    @if(lightness($color)>60){
+        @return rgb(41, 40, 40);
+    }@else{
+        @return #fff;
+    }
+}
+
+// ustaw background
+@mixin set-background($color){
+      background-color:$color;
+        color:set-text-color($color);
+}
+
+// .my-1{
+//     margin:11rem 0rem;
+// }
+// margin and padding
+$spaceamounts: (1,2,3,4,5);
+
+@each $space in $spaceamounts {
+    .m-#{$space}{
+        margin:#{$space}rem;
+    }
+        .my-#{$space}{
+        margin:#{$space}rem 0rem;
+    }
+     .p-#{$space}{
+        padding:#{$space}rem;
+    }
+        .py-#{$space}{
+        padding:#{$space}rem 0rem;
+    }
+}
